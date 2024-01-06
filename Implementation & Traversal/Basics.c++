@@ -2,7 +2,6 @@
 using namespace std;
 
 //Every Node of the Binary tree has data and  left ptr, right ptr for keeping track of the left subtree, right subtree of the node.
-
 struct BTNode{
     int data;
     BTNode* left_ptr;
@@ -15,7 +14,6 @@ struct BTNode{
 };
 
 //This is just one of the way to build binary tree(not standard)
-
 BTNode* buildTree(BTNode* &root){
     int data;
 
@@ -33,6 +31,38 @@ BTNode* buildTree(BTNode* &root){
     root->right_ptr = buildTree(root->right_ptr);
 
     return root;
+}
+
+//Building Tree Level Wise
+BTNode* buildTree_LevelWise(){
+    cout<<"Enter Data for the Root Node: ";
+    queue<BTNode*> q;
+    int data;
+    cin>>data;
+    BTNode* root_node = new BTNode(data);
+    q.push(root_node);
+    
+    while (!q.empty()){
+        BTNode* temp = q.front();
+        q.pop();
+
+        int leftData;
+        cout<<"Enter data for the Left Node of "<<temp->data<<": ";
+        cin>>leftData;
+        if (leftData != -1){
+            temp->left_ptr = new BTNode(leftData);
+            q.push(temp->left_ptr);    
+        }
+
+        int rightData;
+        cout<<"Enter data for the Right Node of "<<temp->data<<": ";
+        cin>>rightData;
+        if (rightData != -1){
+            temp->right_ptr = new BTNode(rightData);
+            q.push(temp->right_ptr);            
+        }        
+    }
+    return root_node;
 }
 
 //Traversing Order is Level wise starting from Root Node of the tree i.e Level 0
@@ -112,7 +142,9 @@ void preOrderTraversal(BTNode* root){
 
 int main() {
     BTNode* root = NULL;
-    root = buildTree(root);
+    // root = buildTree(root);
+    
+    root = buildTree_LevelWise();
 
     levelOrderTraversal(root);
 
